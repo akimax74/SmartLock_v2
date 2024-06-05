@@ -11,15 +11,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.User'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-Session = sessionmaker(autocommit = False, autoflush = True, bind= engine)  # Sessionの初期化
+Session = sessionmaker(autocommit = False, autoflush = True, bind= engine)  
 
 class User(db.Model):
     __tablename__ = 'user'
-    token = db.Column(db.String(36), primary_key=True)  # tokenを主キーにする
+    token = db.Column(db.String(36), primary_key=True)  
     name = db.Column(db.String(128), nullable=False)
 
     def __init__(self, name):
-        self.token = str(uuid.uuid4())  # 一意のトークンを生成
+        self.token = str(uuid.uuid4())  
         self.name = name
 
 is_unlocked = True
@@ -37,8 +37,7 @@ def top():
 def lock_route():
     global is_unlocked  
     token = request.args['token']
-    print(token)
-    #session = Session()  
+    print(token) 
     user = User.query.get(token)
     if user:
         is_unlocked = False
@@ -51,8 +50,7 @@ def lock_route():
 def unlock_route():
     global is_unlocked  
     token = request.args['token']
-    print(token)
-    #session = Session()  
+    print(token)  
     user = User.query.get(token)
     if user:
         is_unlocked = True
@@ -63,7 +61,7 @@ def unlock_route():
 
 @app.route("/add_user", methods=['POST'])
 def add_user():
-    if request.form['password'] == "Akira2003":
+    if request.form['password'] == "Hoge123": #任意のパスワードを設定
         name = request.form['name']
         new_user = User(name=name)
         db.session.add(new_user)
@@ -74,7 +72,7 @@ def add_user():
 @app.route("/del_user", methods=['DELETE'])
 def del_user():
     token = request.args['token']
-    session = Session()  # Sessionをここで初期化
+    session = Session()  
     del_data = User.query.get(token)
     if del_data:
         db.session.delete(del_data)
@@ -88,7 +86,6 @@ def get_users():
     token = request.args['token']
     if not token:
         return "Unauthorized", 401
-    #session = Session()  # Sessionをここで初期化
     user = User.query.get(token)
     if not user:
         return "Unauthorized", 401
