@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鍵</title>
+</head>
+<body>
+    <h1>Welcome! {{login_name}}</h1>
+    <form action="/lock" method="GET">
+        <input type="hidden" name="token" value="{{token}}">
+        <p><input type="submit" value="Lock"></p>
+    </form>
+    <form action="/unlock" method="GET">
+        <input type="hidden" name="token" value="{{token}}">
+        <p><input type="submit" value="Unlock"></p>
+    </form>
+</body>
+</html>
